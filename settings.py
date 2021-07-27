@@ -53,8 +53,7 @@ class Settings(wx.Frame):
         sizer_18.Add(sizer_20, 1, wx.EXPAND, 0)
 
         self.combo_box_3 = wx.ComboBox(self.panel_2, wx.ID_ANY,
-                                       choices=["AAVEUSDT", "WAVESUSDT", "CHZUSDT", "BLZUSDT", "# NONE"],
-                                       style=wx.CB_DROPDOWN | wx.CB_SORT)
+                                       choices=["AAVEUSDT", "WAVESUSDT", "CHZUSDT", "BLZUSDT", "# NONE"], style=wx.CB_DROPDOWN | wx.CB_SORT)
         self.combo_box_3.SetSelection(1)
         sizer_20.Add(self.combo_box_3, 2, wx.ALIGN_CENTER_VERTICAL | wx.LEFT, 15)
 
@@ -283,7 +282,10 @@ class Settings(wx.Frame):
         st1 = wx.StaticText(self.Settings, wx.ID_ANY, "Set the Time Frame")
         lable.Add(st1, 1, wx.BOTTOM | wx.EXPAND | wx.LEFT | wx.RESERVE_SPACE_EVEN_IF_HIDDEN | wx.RIGHT, 15)
         timeframe_val = sj['timeframe']
-        self.text_ctrl_5 = wx.TextCtrl(self.Settings, wx.ID_ANY, timeframe_val)
+        #self.text_ctrl_5 = wx.TextCtrl(self.Settings, wx.ID_ANY, timeframe_val)
+        self.text_ctrl_5=wx.ComboBox(self.Settings, wx.ID_ANY,
+                                     choices=["1m","3m","5m","15","30m","1H","2H","4H","6H","8H","12H","1D","3D","1W","1M"], style=wx.CB_DROPDOWN)
+        self.combo_box_3.SetSelection(1)
         timeframe_bar.Add(self.text_ctrl_5, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 15)
 
         ema1_br = wx.BoxSizer(wx.HORIZONTAL)
@@ -368,7 +370,10 @@ class Settings(wx.Frame):
         st6 = wx.StaticText(self.Settings, wx.ID_ANY, "Set the Margin Type")
         sizer_21.Add(st6, 1, wx.BOTTOM | wx.EXPAND | wx.LEFT | wx.RESERVE_SPACE_EVEN_IF_HIDDEN | wx.RIGHT, 15)
 
-        self.text_ctrl_10 = wx.TextCtrl(self.Settings, wx.ID_ANY, sj["margin_type"])
+        #self.text_ctrl_10 = wx.TextCtrl(self.Settings, wx.ID_ANY, sj["margin_type"])
+        self.text_ctrl_10=wx.ComboBox(self.Settings, wx.ID_ANY,
+                                      choices=['ISOLATED','CROSS'], style=wx.CB_DROPDOWN | wx.CB_SORT)
+        self.combo_box_3.SetSelection(1)
         margin_type_bar.Add(self.text_ctrl_10, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALL, 15)
 
         exit_sw = wx.BoxSizer(wx.HORIZONTAL)
