@@ -43,7 +43,7 @@ class Watchlist_Item():
         label_1.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, 0, title))
         sizer_2.Add(label_1, 1, wx.EXPAND | wx.LEFT, 6)
 
-        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("assets/close.png", wx.BITMAP_TYPE_ANY),
+        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("../assets/close.png", wx.BITMAP_TYPE_ANY),
                                                style=wx.BORDER_NONE | wx.BU_AUTODRAW | wx.BU_EXACTFIT | wx.BU_NOTEXT)
         self.bitmap_button_1.SetBackgroundColour(wx.Colour(0, 0, 0))
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
@@ -134,7 +134,7 @@ class MyFrame(wx.Frame):
         self.exit_button = wx.Button(self.panel_1, wx.ID_CANCEL, "", style=wx.BORDER_NONE | wx.BU_NOTEXT)
         self.exit_button.SetMinSize((32, 32))
         self.exit_button.SetBackgroundColour(wx.Colour(0, 0, 0))
-        self.exit_button.SetBitmap(wx.Bitmap('assets/close.png', wx.BITMAP_TYPE_ANY))
+        self.exit_button.SetBitmap(wx.Bitmap('../assets/close.png', wx.BITMAP_TYPE_ANY))
         top_pane.Add(self.exit_button, 0, 0, 0)
 
         self.backpanel = wx.Notebook(self.panel_1, wx.ID_ANY, style=wx.NB_FIXEDWIDTH)
@@ -282,9 +282,9 @@ class MyFrame(wx.Frame):
         self.exit_tgl.SetMinSize((222, 20))
         self.exit_tgl.SetBackgroundColour(wx.Colour(0, 0, 0))
         self.exit_tgl.SetForegroundColour(wx.Colour(0, 0, 0))
-        self.exit_tgl.SetBitmap(wx.Bitmap("assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
+        self.exit_tgl.SetBitmap(wx.Bitmap("../assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
         self.exit_tgl.SetBitmapPressed(
-            wx.Bitmap("assets/toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
+            wx.Bitmap("../assets/toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
         sizer_10.Add(self.exit_tgl, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT | wx.RIGHT | wx.SHAPED, 121)
         if sj["exit_switch"] == "t":
             self.exit_tgl.SetValue(True)
@@ -306,8 +306,8 @@ class MyFrame(wx.Frame):
         self.long_tgl.SetMinSize((222, 20))
         self.long_tgl.SetBackgroundColour(wx.Colour(0, 0, 0))
         self.long_tgl.SetForegroundColour(wx.Colour(0, 0, 0))
-        self.long_tgl.SetBitmap(wx.Bitmap("assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
-        self.long_tgl.SetBitmapPressed(wx.Bitmap("assets/toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
+        self.long_tgl.SetBitmap(wx.Bitmap("../assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
+        self.long_tgl.SetBitmapPressed(wx.Bitmap("../assets/toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
         sizer_11.Add(self.long_tgl, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT | wx.RIGHT | wx.SHAPED, 121)
 
         if sj["long_switch"] == "t":
@@ -331,9 +331,9 @@ class MyFrame(wx.Frame):
         self.short_tgl.SetMinSize((222, 20))
         self.short_tgl.SetBackgroundColour(wx.Colour(0, 0, 0))
         self.short_tgl.SetForegroundColour(wx.Colour(0, 0, 0))
-        self.short_tgl.SetBitmap(wx.Bitmap("assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
+        self.short_tgl.SetBitmap(wx.Bitmap("../assets/toggle_btn(0).png", wx.BITMAP_TYPE_ANY))
         self.short_tgl.SetBitmapPressed(
-            wx.Bitmap("assets\\toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
+            wx.Bitmap("../assets/toggle_btn(1).png", wx.BITMAP_TYPE_ANY))
         sizer_12.Add(self.short_tgl, 0, wx.ALIGN_CENTER_VERTICAL | wx.LEFT | wx.RIGHT | wx.SHAPED, 121)
 
         if sj["short_switch"] == "t":
@@ -553,7 +553,7 @@ class MyDialog(wx.Dialog):
         self.exit_button = wx.Button(self, wx.ID_CANCEL, "", style=wx.BORDER_NONE | wx.BU_NOTEXT)
         self.exit_button.SetMinSize((32, 32))
         self.exit_button.SetBackgroundColour(wx.Colour(0, 0, 0))
-        self.exit_button.SetBitmap(wx.Bitmap("C:\\Settings\\bin\\assets\\close.png", wx.BITMAP_TYPE_ANY))
+        self.exit_button.SetBitmap(wx.Bitmap("../assets/close.png", wx.BITMAP_TYPE_ANY))
         top_pane.Add(self.exit_button, 0, 0, 0)
 
         content_grid = wx.GridSizer(3, 2, 0, 0)
