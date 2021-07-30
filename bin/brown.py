@@ -46,6 +46,7 @@ class Watchlist_Item():
         self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("../assets/close.png", wx.BITMAP_TYPE_ANY),
                                                style=wx.BORDER_NONE | wx.BU_AUTODRAW | wx.BU_EXACTFIT | wx.BU_NOTEXT)
         self.bitmap_button_1.SetBackgroundColour(wx.Colour(0, 0, 0))
+        self.bitmap_button_1.SetLabel(title)
         self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
         sizer_2.Add(self.bitmap_button_1, 0, wx.RIGHT, 6)
 
@@ -81,8 +82,12 @@ class Watchlist_Item():
         # end wxGlade
 
     def remove_watchlist(event):  # wxGlade: Watchlist_Item.<event_handler>
-        print('trying to remove')
-        print(event.GetEventObject())
+        title = event.GetEventObject().GetLabel()
+        print(f'trying to remove {title}')
+        del sjtemp["watchlist"][title]
+        with open('../json/settings.json', 'w') as setjson:
+            json.dump(sjtemp, setjson)
+        print("done, please restart the app")
 
 
 
