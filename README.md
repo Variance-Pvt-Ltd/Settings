@@ -3,7 +3,7 @@ Settings UI for Variance Pvt. Ltd.
 
 ## Running the app
 ```
-$ python3 /assets/brown.py
+$ python3 /bin/brown.py
 ```
 ## Implementation of backend
  - uncomment and/or modify line #457 of `brown.py` as required.
