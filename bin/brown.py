@@ -6,7 +6,7 @@
 
 import wx
 import json
-from trash.new_watchlist import Watchlist_lst
+
 
 # import main
 
@@ -31,6 +31,8 @@ for title in sj["watchlist"]:
 
 def deleter(index):
     del sjtemp['watchlist'][index]
+    with open('../json/settings.json', 'w') as setjson:
+        json.dump(sjtemp, setjson)
     Watchlist_lst.reload_list(app.frame.listy)
 
 
@@ -66,9 +68,6 @@ class Watchlist_lst(wx.Panel):
         # end wxGlade
 
     def del_itm(self, event):  # wxGlade: Watchlist_lst.<event_handler>
-        print("Event handler 'del_itm' not implemented!")
-        # self.watchlist_d.DeleteItem(event.GetIndex())
-        # deleter(event.GetIndex())
         x=event.GetIndex()
         p=self.watchlist_d.GetItemText(x)
         deleter(p)
@@ -440,9 +439,9 @@ class MyFrame(wx.Frame):
 
     def start_button_clicked(self, event):  # wxGlade: MyFrame.<event_handler>
         if self.start_btn.GetLabel() == "START":
-            ################## starting bot begin###################
+            ################## starting bot begin ###################
             # main.main.main()
-            ################## starting bot end ###################
+            ################## starting bot end ####################
             self.start_btn.SetLabel("STOP")
         else:
             # TODO: implemented to stop bot here.
@@ -591,6 +590,7 @@ class MyDialog(wx.Dialog):
         # end wxGlade
 
     def button_OK_clicked(self, event):
+        # noinspection PyTypeChecker
         MyFrame.add_watchlist_now(app.frame.watchlist, title=self.title.GetValue(), base=self.base_asset.GetValue(),
                                   quote=self.quote_asset.GetValue())
         event.Skip()
