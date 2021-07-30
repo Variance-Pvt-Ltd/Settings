@@ -6,110 +6,92 @@
 
 import wx
 import json
+from trash.new_watchlist import Watchlist_lst
 
 # import main
 
-# load dependencies
+# load dependencies begin
 with open('../json/credentials.json') as credentials_j:
     cj = dict(json.load(credentials_j))
 with open('../json/settings.json') as settings_j:
     sj = dict(json.load(settings_j))
     wj = dict(sj['watchlist'])
-sjtemp={}
+sjtemp = {}
 for x in sj:
-    sjtemp[x]=sj[x]
+    sjtemp[x] = sj[x]
+listo = []
+for title in sj["watchlist"]:
+    base = sj["watchlist"][title]["base_asset"]
+    quote = sj["watchlist"][title]["quote_asset"]
+    listo.append([title, base, quote])
 
-# end dependencies
-class Watchlist_Item():
-    def mark(parent, title, base, quote):
-        # # begin wxGlade: Watchlist_Item.__init__
-        # kwds["style"] = kwds.get("style", 0) | wx.BORDER_NONE | wx.TAB_TRAVERSAL
-        # wx.Panel.__init__(self,None, wx.ID_ANY)
-        # self = wx.Panel(None, wx.ID_ANY, "")
-        self = wx.Panel(parent, wx.ID_ANY, style=wx.BORDER_SIMPLE)
-        self.title = title
-        title =title
-        # self.SetSizeWH(-1, 55)
-        self.SetBackgroundColour(wx.Colour(0, 0, 0))
-        self.SetForegroundColour(wx.Colour(255, 255, 255))
 
-        sizer_1 = wx.BoxSizer(wx.VERTICAL)
+# load dependencies end
 
-        sizer_2 = wx.BoxSizer(wx.HORIZONTAL)
-        sizer_1.Add(sizer_2, 0, wx.EXPAND | wx.LEFT | wx.TOP, 24)
 
-        label_1 = wx.StaticText(self, wx.ID_ANY, title)
-        label_1.SetForegroundColour(wx.Colour(255, 255, 255))
-        label_1.SetFont(wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, 0, title))
-        sizer_2.Add(label_1, 1, wx.EXPAND | wx.LEFT, 6)
+def deleter(index):
+    del sjtemp['watchlist'][index]
+    Watchlist_lst.reload_list(app.frame.listy)
 
-        self.bitmap_button_1 = wx.BitmapButton(self, wx.ID_ANY, wx.Bitmap("../assets/close.png", wx.BITMAP_TYPE_ANY),
-                                               style=wx.BORDER_NONE | wx.BU_AUTODRAW | wx.BU_EXACTFIT | wx.BU_NOTEXT)
-        self.bitmap_button_1.SetBackgroundColour(wx.Colour(0, 0, 0))
-        self.bitmap_button_1.SetLabel(title)
-        self.bitmap_button_1.SetSize(self.bitmap_button_1.GetBestSize())
-        sizer_2.Add(self.bitmap_button_1, 0, wx.RIGHT, 6)
 
-        grid_sizer_1 = wx.GridSizer(2, 2, 5, 12)
-        sizer_1.Add(grid_sizer_1, 6, wx.ALL | wx.EXPAND, 24)
+# start of class Watchlist_lst
 
-        label_2 = wx.StaticText(self, wx.ID_ANY, "Base Asset")
-        label_2.SetForegroundColour(wx.Colour(255, 255, 255))
-        label_2.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, 0, ""))
-        grid_sizer_1.Add(label_2, 0, wx.ALIGN_CENTER, 0)
+class Watchlist_lst(wx.Panel):
+    def __init__(self, *args, **kwds):
+        # begin wxGlade: Watchlist_lst.__init__
+        kwds["style"] = kwds.get("style", 0)
+        wx.Panel.__init__(self, *args, **kwds)
+        self.SetSize((932, 999))
 
-        self.text_ctrl_1 = wx.TextCtrl(self, wx.ID_ANY, base)
-        self.text_ctrl_1.SetMinSize((130, 33))
-        grid_sizer_1.Add(self.text_ctrl_1, 0, wx.ALIGN_CENTER, 0)
+        sizer_1 = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_1.SetMinSize(-1, 850)
 
-        label_3 = wx.StaticText(self, wx.ID_ANY, "Quote Asset")
-        label_3.SetForegroundColour(wx.Colour(255, 255, 255))
-        label_3.SetFont(wx.Font(12, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, 0, ""))
-        grid_sizer_1.Add(label_3, 0, wx.ALIGN_CENTER, 0)
-
-        self.text_ctrl_2 = wx.TextCtrl(self, wx.ID_ANY, quote)
-        self.text_ctrl_2.SetMinSize((130, 33))
-        grid_sizer_1.Add(self.text_ctrl_2, 0, wx.ALIGN_CENTER, 0)
+        self.watchlist_d = wx.ListCtrl(self, wx.ID_ANY,
+                                       style=wx.BORDER_SUNKEN | wx.LC_AUTOARRANGE | wx.LC_HRULES | wx.LC_REPORT)
+        self.watchlist_d.SetBackgroundColour(wx.Colour(78, 78, 78))
+        self.watchlist_d.SetForegroundColour(wx.Colour(255, 255, 255))
+        self.watchlist_d.SetFont(wx.Font(14, wx.FONTFAMILY_MODERN, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_BOLD, 0, ""))
+        self.watchlist_d.AppendColumn("Symbol", format=wx.LIST_FORMAT_LEFT, width=330)
+        self.watchlist_d.AppendColumn("Base Assets", format=wx.LIST_FORMAT_LEFT, width=250)
+        self.watchlist_d.AppendColumn("Quote Assets", format=wx.LIST_FORMAT_LEFT, width=233)
+        sizer_1.Add(self.watchlist_d, 0, wx.ALL | wx.EXPAND, 47)
 
         self.SetSizer(sizer_1)
-        sizer_1.Fit(self)
 
         self.Layout()
 
-        # self.Bind(wx.EVT_BUTTON, Watchlist_Item.remove_watchlist, self.bitmap_button_1)
-        self.bitmap_button_1.Bind(wx.EVT_BUTTON,Watchlist_Item.remove_watchlist)
-        return self
+        self.Bind(wx.EVT_LIST_ITEM_RIGHT_CLICK, self.del_itm, self.watchlist_d)
+        self.Bind(wx.EVT_LIST_DELETE_ITEM, self.del_itm, self.watchlist_d)
+        self.Bind(wx.EVT_LIST_INSERT_ITEM, self.insrt_itm, self.watchlist_d)
         # end wxGlade
 
-    def remove_watchlist(event):  # wxGlade: Watchlist_Item.<event_handler>
-        title = event.GetEventObject().GetLabel()
-        print(f'trying to remove {title}')
-        del sjtemp["watchlist"][title]
-        with open('../json/settings.json', 'w') as setjson:
-            json.dump(sjtemp, setjson)
-        print("done, please restart the app")
+    def del_itm(self, event):  # wxGlade: Watchlist_lst.<event_handler>
+        print("Event handler 'del_itm' not implemented!")
+        # self.watchlist_d.DeleteItem(event.GetIndex())
+        # deleter(event.GetIndex())
+        x=event.GetIndex()
+        p=self.watchlist_d.GetItemText(x)
+        deleter(p)
+        event.Skip()
+
+    def insrt_itm(self, event):  # wxGlade: Watchlist_lst.<event_handler>
+        event.Skip()
+
+    def reload_list(self):
+        listo = []
+        for title in sj["watchlist"]:
+            base = sj["watchlist"][title]["base_asset"]
+            quote = sj["watchlist"][title]["quote_asset"]
+            listo.append([title, base, quote])
+        self.watchlist_d.DeleteAllItems()
+        for x in listo:
+            self.watchlist_d.Append(x)
 
 
-
-def delete_r(title):
-    print(title)
-    # del sjtemp[title]
-    with open('../json/settings.json', 'w') as setjson:
-        json.dump(sjtemp, setjson)
-
-
-
-def load_watchlist(self):
-    wl = []
-    for title in wj:
-        base = wj[title]["base_asset"]
-        quote = wj[title]["quote_asset"]
-        wl.append(Watchlist_Item.mark(self.watchlist, title, base, quote))
-    for x in wl:
-        self.sizer_19.Add(x, 1, wx.EXPAND, 0)
-
+# end of class Watchlist_lst
 
 class MyFrame(wx.Frame):
+    global sjtemp,sj
 
     def __init__(self, *args, **kwds):
 
@@ -155,16 +137,18 @@ class MyFrame(wx.Frame):
         self.backpanel.AddPage(self.watchlist, "     Watchlist     ")
 
         self.sizer_19 = wx.BoxSizer(wx.VERTICAL)
-
+        self.top_panel = wx.BoxSizer(wx.HORIZONTAL)
+        self.help_txt = wx.StaticText(self.watchlist, wx.ID_ANY, "Right Click on an Item to delete")
+        self.top_panel.Add(self.help_txt, 0, wx.LEFT | wx.RIGHT | wx.TOP, 11)
         self.add_btn = wx.Button(self.watchlist, wx.ID_ADD, "")
-        self.sizer_19.Add(self.add_btn, 0, wx.ALIGN_RIGHT | wx.LEFT | wx.RIGHT | wx.TOP, 11)
-
-        # self.watchlist_pnl = wx.Panel(self.watchlist, wx.ID_ANY, style=wx.TAB_TRAVERSAL)
-        # self.watchlist_pnl.SetScrollRate(10, 10)
-
-
-        load_watchlist(self)
-
+        self.top_panel.Add(self.add_btn, 0,  wx.LEFT | wx.RIGHT | wx.TOP, 11)
+        self.sizer_19.Add(self.top_panel, 0, wx.ALL, 0)
+        self.listy = Watchlist_lst(self.watchlist, wx.ID_ANY, style=wx.BORDER_SUNKEN)
+        self.sizer_19.Add(self.listy, 0, wx.ALIGN_CENTER | wx.LEFT | wx.RIGHT | wx.TOP, 11)
+        for title in wj:
+            base = wj[title]['base_asset']
+            quote = wj[title]['quote_asset']
+            self.listy.watchlist_d.Append([title, base, quote])
         self.Settings = wx.ScrolledWindow(self.backpanel, wx.ID_ANY, style=wx.BORDER_NONE | wx.TAB_TRAVERSAL)
         self.Settings.SetScrollRate(7, 7)
         self.backpanel.AddPage(self.Settings, "     Settings     ")
@@ -452,9 +436,6 @@ class MyFrame(wx.Frame):
     def add_btn_pressed(self, event):  # wxGlade: MyFrame.<event_handler>
         frame = MyDialog(None, wx.ID_ANY, "")
         frame.Show()
-        # sizer11=wx.BoxSizer(wx.)
-        # label_24 = wx.StaticText(self.watchlist_pnl, wx.ID_ANY, "Variance Pvt. Ltd.")
-        # self.sizer19.Add(label_24, 0, wx.LEFT, 14)
         event.Skip()
 
     def start_button_clicked(self, event):  # wxGlade: MyFrame.<event_handler>
@@ -466,6 +447,11 @@ class MyFrame(wx.Frame):
         else:
             # TODO: implemented to stop bot here.
             self.start_btn.SetLabel("START")
+
+        self.webhook_url.SetEditable(False)
+        self.api_key.SetEditable(False)
+        self.api_secret.SetEditable(False)
+        self.tld.SetEditable(False)
         event.Skip()
 
     def save_button_clicked(self, event):  # wxGlade: MyFrame.<event_handler>
@@ -511,25 +497,16 @@ class MyFrame(wx.Frame):
         # main.main.update_settings()
         ################## update_settings end ###############
 
-        self.webhook_url.SetEditable(False)
-        self.api_key.SetEditable(False)
-        self.api_secret.SetEditable(False)
-        self.tld.SetEditable(False)
-
         # end of class MyFrame
 
     def add_watchlist_now(self, title, base, quote):
-        # add obj to watchlist_pnl
-        # app.frame.sizer_19.Add(Watchlist_Item.mark(app.frame.watchlist,title,base,quote), 1, wx.EXPAND, 0)
-
+        global sjtemp
+        app.frame.listy.watchlist_d.Append([title, base, quote])
         sjtemp["watchlist"][title] = {}
         sjtemp["watchlist"][title]["base_asset"] = base
         sjtemp["watchlist"][title]["quote_asset"] = quote
         with open('../json/settings.json', 'w') as setjson:
             json.dump(sjtemp, setjson)
-
-
-
 
 
 class MyDialog(wx.Dialog):
@@ -614,15 +591,10 @@ class MyDialog(wx.Dialog):
         # end wxGlade
 
     def button_OK_clicked(self, event):
-        MyFrame.add_watchlist_now(self, title=self.title.GetValue(), base=self.base_asset.GetValue(),
+        MyFrame.add_watchlist_now(app.frame.watchlist, title=self.title.GetValue(), base=self.base_asset.GetValue(),
                                   quote=self.quote_asset.GetValue())
         event.Skip()
 
-
-# end of class MyDialog
-
-
-# end of class Watchlist_Item
 
 class MyApp(wx.App):
     def OnInit(self):
@@ -631,8 +603,6 @@ class MyApp(wx.App):
         self.frame.Show()
         return True
 
-
-# end of class MyApp
 
 if __name__ == "__main__":
     app = MyApp(0)

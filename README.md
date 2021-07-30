@@ -12,7 +12,7 @@ $ python3 /bin/brown.py
 
 
 ## Known issues
- - Adding to Watchlist need app restart to update the list.
- - Removing something from Watchlist is not yet implemented.
-##### These will we erdicated as soon as possible.
-### If you find any other issue, please report on Github issue or call me.
+ - Adding to `Watchlist` ~~need app restart to update the list.~~ working smoothly.
+ - Removing something from `Watchlist` ~~is not yet implemented.~~ is working smoothly.
+##### These will we eradicated as soon as possible.
+### If you find any other issue, please report on GitHub issue or call me.
